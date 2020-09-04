@@ -1,0 +1,22 @@
+<ul class="list-unstyled">
+  <%= link_to 'CREATE NEW TASK!', new_diettask_path, class: "btn btn-primary" %>
+  <% diettasks.each do |diettask| %>
+    <li class="media mb-3">
+      <img class="mr-2 rounded" src="<%= gravatar_url(diettask.user, { size: 50 }) %>" alt="">
+      <div class="media-body">
+        <div>
+          <%= link_to diettask.user.name, user_path(diettask.user) %> <span class="text-muted">created at<%= diettask.created_at %></span>
+        </div>
+        <div>
+          <p class="mb-0"><%= diettask.content %></p>
+        </div>
+        <div>
+          <% if current_user == diettask.user %>
+            <%= link_to "Delete", diettask, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger btn-sm' %>
+          <% end %>
+        </div>
+      </div>
+    </li>
+  <% end %>
+  <%= paginate diettasks %>
+</ul>

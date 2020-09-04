@@ -3,10 +3,16 @@ before_action :require_user_logged_in, only: [:index, :show]
 
  def index
    @users = User.order(id: :desc).page(params[:page]).per(15)
+
+    if logged_in?
+      @diettask = current_user.diettasks.build  # form_with 用
+      @diettasks = current_user.diettasks.order(id: :desc).page(params[:page])
+    end
  end
 
  def show
    @user = User.find(params[:id])
+   @diettasks = @user.diettasks.order(id: :desc).page(params[:page])
  end
   
  def new
@@ -30,4 +36,5 @@ before_action :require_user_logged_in, only: [:index, :show]
   def user_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation)
   end
+  
 end
