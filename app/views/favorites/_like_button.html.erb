@@ -1,7 +1,7 @@
 <% if current_user.like?(diettask) %>
     <%= form_with(model: current_user.favorites.find_by(diettask_id: diettask.id), local: true, method: :delete) do |f| %>
       <%= hidden_field_tag :diettask_id, diettask.id %>
-      <%= f.submit 'いいね削除...', class: 'btn btn-warning btn-sm' %>
+      <%= f.submit 'いいね削除!', class: 'btn btn-warning btn-sm' %>
     <% end %>
   <% else %>
     <%= form_with(model: current_user.favorites.build, local: true) do |f| %>
