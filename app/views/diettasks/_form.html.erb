@@ -15,6 +15,16 @@
     <%= f.label :content, 'タスク' %>
     <%= f.text_field :content, class: 'form-control' %>
   </div>
+  
+  <div class="form-group">
+    <%= f.label :limit_date, '期限日' %>
+    <%= f.date_select :limit_date, class: 'form-control' %>
+  </div>
+  
+  <div class="form-group">
+    <%= f.label :ステータス %>
+    <%= f.select(:status, [['Undone', 'Undone'], ['Done', 'Done']]) %>
+  </div>
 
   <%= f.submit '作成', class: 'btn btn-primary' %>
 <% end %>

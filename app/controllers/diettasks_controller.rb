@@ -1,5 +1,6 @@
 class DiettasksController < ApplicationController
   before_action :require_user_logged_in
+  before_action :correct_user, only: [:edit, :update, :destroy]
   
   def new
       @diettask = Diettask.new
@@ -12,7 +13,7 @@ class DiettasksController < ApplicationController
     @diettask = current_user.diettasks.build(diettask_params)
     if @diettask.save
       flash[:success] = 'タスクを作成しました。'
-      redirect_to @user
+      redirect_to user_url(id: current_user)
     else
       @diettasks = current_user.diettasks.order(id: :desc).page(params[:page])
       flash.now[:danger] = 'タスクの作成に失敗しました。'
@@ -21,9 +22,9 @@ class DiettasksController < ApplicationController
   end
   
   def update
-    if @task.update(task_params)
+    if @diettask.update(diettask_params)
         flash[:success] = "タスクが正常に編集されました"
-        redirect_to root_url
+        redirect_to user_url(id: current_user)
     else
         flash.now[:danger] = "タスクが正常に編集されませんでした"
         render :edit
@@ -31,10 +32,19 @@ class DiettasksController < ApplicationController
   end
 
   def destroy
-    @task.destroy
-
+    @diettask = Diettask.find(params[:id])
+    if @diettask.present?
+    @diettask.destroy
     flash[:success] = 'タスク は正常に削除されました'
-    redirect_back(fallback_location: root_path)
+    redirect_back(fallback_location: user_url(id: current_user))
+    end
+  end
+  
+  def done
+    @diettask = Diettask.find(params[:id])
+    @diettask.update(status: "Done")
+    @diettask = Diettask.all.includes(:user)
+    redirect_to user_url(id: current_user)
   end
 
   private
@@ -46,7 +56,7 @@ class DiettasksController < ApplicationController
   def correct_user
     @diettask = current_user.diettasks.find_by(id: params[:id])
     unless @diettask
-      redirect_to root_url
+      redirect_to user_url(id: current_user)
     end
   end
 end

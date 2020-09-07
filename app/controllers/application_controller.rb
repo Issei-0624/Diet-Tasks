@@ -9,4 +9,11 @@ class ApplicationController < ActionController::Base
       redirect_to login_url
     end
   end
+  
+  def counts(user)
+    @count_diettasks = user.diettasks.count
+    @count_followings = user.followings.count
+    @count_followers = user.followers.count
+    @count_likes = user.likes.count
+  end
 end

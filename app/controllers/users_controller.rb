@@ -5,14 +5,16 @@ before_action :require_user_logged_in, only: [:index, :show]
    @users = User.order(id: :desc).page(params[:page]).per(15)
 
     if logged_in?
-      @diettask = current_user.diettasks.build  # form_with 用
-      @diettasks = current_user.diettasks.order(id: :desc).page(params[:page])
+      @diettask = current_user.diettasks.build 
+      @diettasks =current_user.diettasks.order(id: :desc).page(params[:page])
     end
  end
 
  def show
    @user = User.find(params[:id])
+   @status = ['todo', 'done']
    @diettasks = @user.diettasks.order(id: :desc).page(params[:page])
+   counts(@user)
  end
   
  def new
@@ -30,6 +32,24 @@ before_action :require_user_logged_in, only: [:index, :show]
       render :new
     end
   end
+  
+ def followings
+    @user = User.find(params[:id])
+    @followings = @user.followings.page(params[:page])
+    counts(@user)
+ end
+  
+ def followers
+    @user = User.find(params[:id])
+    @followers = @user.followers.page(params[:page])
+    counts(@user)
+ end
+ 
+ def likes
+    @user = User.find(params[:id])
+    @likes = @user.likes.page(params[:page])
+    counts(@user)
+ end
 
   private
 
