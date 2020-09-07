@@ -19,6 +19,12 @@ class DiettasksController < ApplicationController
       flash.now[:danger] = 'タスクの作成に失敗しました。'
       render :new
     end
+    
+    # difference = (@diettask.limit_date - Date.today).to_i
+    # unless difference >= 0
+    #   flash[:error] = "期限日は作成日以降に設定してください！"
+    #   root_path
+    # end
   end
   
   def update
@@ -42,7 +48,7 @@ class DiettasksController < ApplicationController
   
   def done
     @diettask = Diettask.find(params[:id])
-    @diettask.update(status: "Done")
+    @diettask.update(status: "達成！")
     @diettask = Diettask.all.includes(:user)
     redirect_to user_url(id: current_user)
   end

@@ -4,32 +4,32 @@
       <img class="mr-2 rounded" src="<%= gravatar_url(diettask.user, { size: 50 }) %>" alt="">
       <div class="media-body">
         <div>
-          <p class ='user-name'><%= link_to diettask.user.name, user_path(diettask.user) %></p> 
+          <p class ='user-name'><%= diettask.user.name %></p> 
         </div>
         <div>
           <p class="d-content"><%= diettask.content %></p>
         </div>
         <ul class="list-button">
-           <% if diettask.status == 'Undone' %>
+           <% if diettask.status == '未完了' %>
         　 <li class="btn btn-light btn-sm"><%= diettask.status %></li>
       　    <% else %>
-           <li class="btn btn-dark disabled btn-sm"><%= diettask.status %></li>
+           <li class="btn btn-danger  btn-sm"><%= diettask.status %></li>
            <% end %>
            <li><%= render 'favorites/like_button', diettask: diettask %></li>
            
            <% if current_user == diettask.user %>
-           <li><%= link_to "Edit", edit_diettask_path(diettask), class: 'btn btn-success btn-sm' %></li>
-           <li><%= link_to "Delete", diettask, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger btn-sm' %></li>
+           <li><%= link_to "編集", edit_diettask_path(diettask), class: 'btn btn-success btn-sm' %></li>
+           <li><%= link_to "削除", diettask, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-dark btn-sm' %></li>
            <% end %>
          </ul>
           <div class= "list-date">
             <% if current_user == diettask.user %>
               <%= link_to done_path(diettask), method: :post do%>
-                <i class="fa fa-check-circle"></i>←Finish!!
+                <i class="fa fa-check-circle"></i>←タスクを達成したらクリック！
               <% end %>
             <% end %>
-            <span>Limit:<%= diettask.limit_date %></span>
-            <span>created at<%= diettask.created_at %></span>
+            <span class = text-danger>期限日:<%= diettask.limit_date %></span>
+            <span>作成日時<%= diettask.created_at %></span>
           </div>
       </div>
     </li>
