@@ -59,3 +59,7 @@ gem 'kaminari'
 gem 'bcrypt', '~> 3.1.7'
 
 gem "font-awesome-sass", "< 5.0.13"
+
+group :production do
+  gem 'pg', '>= 0.18', '< 2.0'
+end
